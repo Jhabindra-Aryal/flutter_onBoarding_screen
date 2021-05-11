@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/controllers/myClipper.dart';
 import 'package:shop_app/controllers/onBordingController.dart';
 
 class OnBoardingPage extends StatelessWidget {
-  final OnBoardingController _controller = OnBoardingController();
   @override
   Widget build(BuildContext context) {
+    OnBoardingController _controller =
+        Provider.of<OnBoardingController>(context);
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -24,7 +26,9 @@ class OnBoardingPage extends StatelessWidget {
               children: [
                 PageView.builder(
                   controller: _controller.pageController,
-                  onPageChanged: _controller.selectedPageIndex,
+                  onPageChanged: (val) {
+                    _controller.selectedPageIndex = val;
+                  },
                   itemCount: _controller.onBoardingPages.length,
                   itemBuilder: (context, index) {
                     return Container(
@@ -88,39 +92,34 @@ class OnBoardingPage extends StatelessWidget {
                   left: 20,
                   child: Row(
                     children: List.generate(
-                      _controller.onBoardingPages.length,
-                      (index) => Obx(() {
-                        return Container(
-                          margin: const EdgeInsets.all(4),
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _controller.selectedPageIndex.value == index
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                        );
-                      }),
-                    ),
+                        _controller.onBoardingPages.length,
+                        (index) => Container(
+                              margin: const EdgeInsets.all(4),
+                              width: 12,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _controller.selectedPageIndex == index
+                                    ? Colors.red
+                                    : Colors.grey,
+                              ),
+                            )),
                   ),
                 ),
                 Positioned(
                   bottom: 20,
                   right: 20,
-                  child: Obx(
-                    () => FloatingActionButton(
-                      elevation: 0.0,
-                      backgroundColor: Colors.lightGreen.shade200,
-                      splashColor: Colors.black,
-                      onPressed: () {
-                        _controller.fordartAction();
-                      },
-                      child: Text(
-                        !_controller.isLastPage ? 'Next' : 'Start',
-                        style: TextStyle(
-                            color: Colors.black, fontFamily: 'Bangers'),
-                      ),
+                  child: FloatingActionButton(
+                    elevation: 0.0,
+                    backgroundColor: Colors.lightGreen.shade200,
+                    splashColor: Colors.black,
+                    onPressed: () {
+                      _controller.forwardAction();
+                    },
+                    child: Text(
+                      !_controller.isLastPage ? 'Next' : 'Start',
+                      style:
+                          TextStyle(color: Colors.black, fontFamily: 'Bangers'),
                     ),
                   ),
                 ),

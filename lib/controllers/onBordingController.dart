@@ -2,18 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shop_app/models/onBoarding_Info.dart';
 
-class OnBoardingController extends GetxController {
-  RxInt selectedPageIndex = 0.obs;
+class OnBoardingController extends ChangeNotifier {
+  int selectedPageIndex = 0;
   PageController pageController = PageController();
 
-  bool get isLastPage => selectedPageIndex.value == onBoardingPages.length - 1;
+  bool get isLastPage => selectedPageIndex == onBoardingPages.length - 1;
 
-  fordartAction() {
+  forwardAction() {
     if (isLastPage) {
     } else
       pageController.nextPage(
           duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
+
+  // class OnBoardingController  {
+  // RxInt selectedPageIndex = 0.obs;
+  // PageController pageController = PageController();
+
+  // bool get isLastPage => selectedPageIndex.value == onBoardingPages.length - 1;
+
+  // fordartAction() {
+  //   if (isLastPage) {
+  //   } else
+  //     pageController.nextPage(
+  //         duration: Duration(milliseconds: 300), curve: Curves.linear);
+  // }
 
   List<OnBoardingInfo> onBoardingPages = [
     OnBoardingInfo(

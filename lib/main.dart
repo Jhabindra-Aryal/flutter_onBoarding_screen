@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/controllers/onBordingController.dart';
 import 'package:shop_app/views/onBoardingPage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider<OnBoardingController>(
+    create: (_) => OnBoardingController(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
