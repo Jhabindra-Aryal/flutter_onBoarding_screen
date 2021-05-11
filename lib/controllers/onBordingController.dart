@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:shop_app/models/onBoarding_Info.dart';
 
 class OnBoardingController extends ChangeNotifier {
   int selectedPageIndex = 0;
+
+  void change(int val) {
+    selectedPageIndex = val;
+    notifyListeners();
+  }
+
   PageController pageController = PageController();
 
   bool get isLastPage => selectedPageIndex == onBoardingPages.length - 1;
@@ -14,7 +19,6 @@ class OnBoardingController extends ChangeNotifier {
       pageController.nextPage(
           duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
-
   // class OnBoardingController  {
   // RxInt selectedPageIndex = 0.obs;
   // PageController pageController = PageController();

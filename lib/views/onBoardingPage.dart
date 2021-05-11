@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/controllers/myClipper.dart';
 import 'package:shop_app/controllers/onBordingController.dart';
 
 class OnBoardingPage extends StatelessWidget {
+  late double _imageHeight;
+  late double _imageWidth;
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
+    if (orientation == Orientation.landscape) {
+      _imageHeight = MediaQuery.of(context).size.height / 100;
+      _imageWidth = MediaQuery.of(context).size.width / 200 + 1;
+    } else {
+      _imageHeight = MediaQuery.of(context).size.height / 200 + 1;
+      _imageWidth = MediaQuery.of(context).size.width / 100;
+    }
     OnBoardingController _controller =
         Provider.of<OnBoardingController>(context);
     return Scaffold(
@@ -26,25 +34,33 @@ class OnBoardingPage extends StatelessWidget {
               children: [
                 PageView.builder(
                   controller: _controller.pageController,
-                  onPageChanged: (val) {
-                    _controller.selectedPageIndex = val;
-                  },
+                  onPageChanged: _controller.change,
                   itemCount: _controller.onBoardingPages.length,
                   itemBuilder: (context, index) {
                     return Container(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          SizedBox(
+                            height: 20.0,
+                          ),
                           Expanded(
                             flex: 3,
-                            child: ClipOval(
-                              clipper: MyClipper(),
-                              child: Image.network(
-                                _controller.onBoardingPages[index].imageAsset,
-                                height: 400,
-                                width: 400,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(200.0),
+                              child: AspectRatio(
+                                aspectRatio: 5 / 5,
+                                child: Image.network(
+                                  _controller.onBoardingPages[index].imageAsset,
+                                  height: 60.0 * _imageHeight,
+                                  width: 60.0 * _imageWidth,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 20.0,
                           ),
                           Expanded(
                             flex: 2,
@@ -114,6 +130,8 @@ class OnBoardingPage extends StatelessWidget {
                     backgroundColor: Colors.lightGreen.shade200,
                     splashColor: Colors.black,
                     onPressed: () {
+                      print(_imageHeight);
+                      print(_imageWidth);
                       _controller.forwardAction();
                     },
                     child: Text(
